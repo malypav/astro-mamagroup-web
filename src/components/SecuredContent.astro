@@ -179,7 +179,7 @@ const { buttonId = "auth-btn", buttonLabel = "Open Secured Link", pwdVariable, u
                     this.submitBtn.textContent = 'Verified';
                     window.open(data.hiddenUrl, '_blank');
                 } else {
-                    this.showError(data.error || 'Invalid password');
+                    this.showError(data.error);
                     this.passwordInput.value = '';
                     this.passwordInput.focus();
                 }
