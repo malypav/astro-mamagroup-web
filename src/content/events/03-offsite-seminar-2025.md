@@ -21,16 +21,24 @@ hotel Albert, Paseky nad Jizerou, Jizerské Mts., Czechia
 
 ## Program:
 
-<script>
-    pdfPath="/events/03-seminar-program.pdf"
-</script>
-<object data="/events/03-seminar-program.pdf" type="application/pdf" width="800px" height="1000px">
-    <!-- <embed src="/events/03-seminar-program.pdf"> -->
+<!-- <object data="/events/03-seminar-program.pdf" type="application/pdf" width="800px" height="1000px">
         <p class="text-red-800">This browser does not support PDFs. Please download the PDF to view it: 
             <a href="/events/03-seminar-program.pdf">
                 Download PDF
             </a>
             .
         </p>
-    <!-- </embed> -->
-</object>
+</object> -->
+
+<iframe 
+  src="https://docs.google.com/gview?url=https://mama-group.cz/events/03-seminar-program.pdf&embedded=true" 
+  width="800px" 
+  height="1000px"
+  style="border: none;">
+    <p class="text-red-800">This browser does not support PDFs. Please download the PDF to view it: 
+        <a href="/events/03-seminar-program.pdf">
+            Download PDF
+        </a>
+        .
+    </p>
+</iframe>
