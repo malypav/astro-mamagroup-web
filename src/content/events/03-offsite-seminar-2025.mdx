@@ -1,0 +1,45 @@
+---
+name: "Institute of Physics Offsite Seminar 2025"
+group: "seminars"
+date: ["2025-05-19", "2025-05-23"]
+createBanner: false
+autoHideBanner: true
+visible: true
+tags: ["offsite seminar","seminar","FUUK"]
+---
+
+import SecuredContent from "@/components/SecuredContent.astro";
+
+
+## Dates and Venue: 
+
+May 19.-23. 2025
+
+hotel Albert, Paseky nad Jizerou, Jizerské Mts., Czechia
+
+
+## Lecture recordings:
+
+
+The YouTube video can be accessed after entering a password:
+<SecuredContent 
+    client:visible 
+    buttonLabel="here"
+    pwdVariable="OFFSITE_SEMINAR_PWD_HASH" 
+    urlVariable="OFFSITE_SEMINAR_URL"
+/>
+
+
+## Program:
+
+<iframe 
+  src="https://docs.google.com/gview?url=https://mama-group.cz/events/03-seminar-program.pdf&embedded=true" 
+  width="800px" 
+  height="1000px"
+  style="border: none;">
+    This browser does not support PDFs. Please download the PDF to view it: 
+        <a href="/events/03-seminar-program.pdf">
+            Download PDF
+        </a>
+        .
+</iframe>

@@ -1,0 +1,211 @@
+---
+
+const { buttonId = "auth-btn", buttonLabel = "Open Secured Link", pwdVariable, urlVariable } = Astro.props;
+
+---
+
+<!-- Secured Link Button -->
+
+<button 
+    id={buttonId}
+    class="flex items-center text-sm citrus-link mb-2 px-2 py-1 bg-gray-200/75 dark:bg-gray-900/75 rounded-lg justify-center items-center hover:brightness-90 dark:hover:brightness-110 transition-all duration-100"
+    title="secured link"
+    aria-label="securedlink"
+>
+    {buttonLabel}
+</button>
+
+<!-- Secure Password Modal -->
+<div id="password-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full mx-4">
+        <h3 class="text-lg font-semibold mb-4 dark:text-white">Enter Password</h3>
+        <input 
+            type="password" 
+            id="password-input" 
+            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg mb-4 dark:bg-gray-700 dark:text-white"
+            placeholder="Password"
+        />
+        <div id="error-message" class="text-red-500 text-sm mb-2 hidden"></div>
+        <div id="status-message" class="text-green-500 text-sm mb-2 hidden"></div>
+        <div class="flex gap-2">
+            <button 
+                id="submit-password" 
+                class="flex-1 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50"
+            >
+                Submit
+            </button>
+            <button 
+                id="cancel-password" 
+                class="flex-1 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-white px-4 py-2 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors"
+            >
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>
+
+<script define:vars={{ buttonId, pwdVariable, urlVariable }}>
+    class SecureAuthHandler {
+        modal;
+        passwordInput;
+        submitBtn;
+        cancelBtn;
+        errorMessage;
+        statusMessage;
+        isLoading;
+        initialized;
+
+        constructor() {
+            this.modal = null;
+            this.passwordInput = null;
+            this.submitBtn = null;
+            this.cancelBtn = null;
+            this.errorMessage = null;
+            this.statusMessage = null;
+            this.isLoading = false;
+            this.initialized = false;
+        }
+
+        init() {
+            if (this.initialized) {
+                return;
+            }
+
+            const authBtn = document.getElementById(buttonId);
+            this.modal = document.getElementById('password-modal');
+            this.passwordInput = document.getElementById('password-input');
+            this.submitBtn = document.getElementById('submit-password');
+            this.cancelBtn = document.getElementById('cancel-password');
+            this.errorMessage = document.getElementById('error-message');
+            this.statusMessage = document.getElementById('status-message');
+
+            if (!authBtn || !this.modal || !this.passwordInput || !this.submitBtn || !this.cancelBtn) {
+                return;
+            }
+
+            this.bindEvents(authBtn);
+            this.initialized = true;
+        }
+
+        bindEvents(authBtn) {
+            authBtn.addEventListener('click', () => this.showModal());
+            this.cancelBtn.addEventListener('click', () => this.hideModal());
+            this.submitBtn.addEventListener('click', () => this.handleSubmit());
+
+            this.modal.addEventListener('click', (e) => {
+                if (e.target === this.modal) {
+                    this.hideModal();
+                }
+            });
+
+            this.passwordInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !this.isLoading) {
+                    this.handleSubmit();
+                }
+            });
+        }
+
+        showModal() {
+            this.modal.classList.remove('hidden');
+            this.modal.classList.add('flex');
+            this.passwordInput.focus();
+            this.passwordInput.value = '';
+            this.hideError();
+        }
+
+        hideModal() {
+            this.modal.classList.add('hidden');
+            this.modal.classList.remove('flex');
+            this.passwordInput.value = '';
+            this.hideError();
+            this.setLoading(false);
+        }
+
+        showError(message) {
+            this.errorMessage.textContent = message;
+            this.errorMessage.classList.remove('hidden');
+        }
+
+        hideError() {
+            this.errorMessage.classList.add('hidden');
+        }
+
+        showStatus(message) {
+            this.statusMessage.innerHTML = message;
+            this.statusMessage.classList.remove('hidden');
+        }
+
+        hideStatus() {
+            this.statusMessage.classList.add('hidden');
+        }
+
+        setLoading(loading) {
+            this.isLoading = loading;
+            this.submitBtn.disabled = loading;
+            this.submitBtn.textContent = loading ? 'Verifying...' : 'Submit';
+        }
+
+        setReloadPage(done) {
+            this.isLoading = !done;
+            this.refreshPage = done;
+            this.submitBtn.disabled = !done;
+            this.submitBtn.textContent = done ? 'Refresh' : 'Verified';
+        }
+
+        async handleSubmit() {
+            if (this.isLoading) return;
+
+            const password = this.passwordInput.value.trim();
+            if (!password) {
+                this.showError('Please enter a password');
+                return;
+            }
+
+            this.setLoading(true);
+            this.hideError();
+
+            try {
+                const response = await fetch('/.netlify/functions/authenticate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ pwdVariable, password })
+                });
+
+                const data = await response.json();
+
+                if (data.success && data.hiddenUrl) {
+                    this.submitBtn.textContent = 'Verified';
+                    window.open(data.hiddenUrl, '_blank');
+                } else {
+                    this.showError(data.error || 'Invalid password');
+                    this.passwordInput.value = '';
+                    this.passwordInput.focus();
+                }
+            } catch (error) {
+                this.showError('Network error. Please try again.');
+            } finally {
+                this.setLoading(false);
+            }
+        }
+    }
+
+    let globalHandler = null;
+
+    function initSecureAuth() {
+        if (globalHandler) {
+            return;
+        }
+        globalHandler = new SecureAuthHandler();
+        globalHandler.init();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initSecureAuth);
+    } else {
+        initSecureAuth();
+    }
+
+    document.addEventListener('astro:page-load', initSecureAuth);
+</script>
