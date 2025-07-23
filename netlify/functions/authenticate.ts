@@ -46,24 +46,8 @@ export const handler: Handler = async (event, context) => {
         console.log('Received pwdVariable:', pwdVariable);
         console.log('Received urlVariable:', urlVariable);
 
-        let storedHash, hiddenUrl;
-        try {
-            storedHash = eval(process.env + '.' + pwdVariable)?.replace('$', '\$');
-            hiddenUrl = eval(process.env + '.' + urlVariable);
-        } catch (evalError) {
-            console.error('Error during eval execution:', evalError);
-            return {
-                statusCode: 500,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
-                },
-                body: JSON.stringify({ success: false, error: 'Configuration error during eval' })
-            };
-        }
-
-        console.log('Evaluated storedHash:', storedHash);
-        console.log('Evaluated hiddenUrl:', hiddenUrl);
+        const storedHash = process.env[pwdVariable]?.replace('$', '\$');
+        const hiddenUrl = process.env[urlVariable];
 
         if (!storedHash || !hiddenUrl) {
             console.log('Missing configuration - storedHash:', !!storedHash, 'hiddenUrl:', !!hiddenUrl);
