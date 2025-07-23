@@ -91,7 +91,7 @@ export const handler: Handler = async (event, context) => {
                 },
                 body: JSON.stringify({ 
                     success: false, 
-                    error: `Invalid password new -${storedHash}- -${pwdVariable}-` 
+                    error: 'Invalid password' 
                 })
             };
         }

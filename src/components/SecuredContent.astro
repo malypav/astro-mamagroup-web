@@ -175,9 +175,9 @@ const { buttonId = "auth-btn", buttonLabel = "Open Secured Link", pwdVariable, u
 
                 const data = await response.json();
 
-                if (data.success && data.hiddenUrl) {
+                if (data.success && data.url) {
                     this.submitBtn.textContent = 'Verified';
-                    window.open(data.hiddenUrl, '_blank');
+                    window.open(data.url, '_blank');
                 } else {
                     this.showError(data.error);
                     this.passwordInput.value = '';
