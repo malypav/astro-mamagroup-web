@@ -170,7 +170,7 @@ const { buttonId = "auth-btn", buttonLabel = "Open Secured Link", pwdVariable, u
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ pwdVariable, password })
+                    body: JSON.stringify({ pwdVariable, urlVariable,password })
                 });
 
                 const data = await response.json();
