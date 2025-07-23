@@ -49,6 +49,9 @@ export const handler: Handler = async (event, context) => {
         const storedHash = process.env[pwdVariable]?.replace('$', '\$');
         const hiddenUrl = process.env[urlVariable];
 
+        console.log('Value pwdVariable:', storedHash);
+        console.log('Value urlVariable:', hiddenUrl);
+
         if (!storedHash || !hiddenUrl) {
             console.log('Missing configuration - storedHash:', !!storedHash, 'hiddenUrl:', !!hiddenUrl);
             return {
