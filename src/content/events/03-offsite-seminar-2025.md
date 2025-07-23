@@ -25,12 +25,12 @@ hotel Albert, Paseky nad Jizerou, Jizerské Mts., Czechia
     pdfPath="/events/03-seminar-program.pdf"
 </script>
 <object data="/events/03-seminar-program.pdf" type="application/pdf" width="800px" height="1000px">
-    <embed src="/events/03-seminar-program.pdf">
+    <!-- <embed src="/events/03-seminar-program.pdf"> -->
         <p class="text-red-800">This browser does not support PDFs. Please download the PDF to view it: 
             <a href="/events/03-seminar-program.pdf">
                 Download PDF
             </a>
             .
         </p>
-    </embed>
+    <!-- </embed> -->
 </object>
