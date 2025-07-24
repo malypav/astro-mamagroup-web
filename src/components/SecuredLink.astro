@@ -1,24 +1,30 @@
 ---
 
-const { buttonId = "auth-btn", buttonLabel = "Open Secured Link", pwdVariable, urlVariable } = Astro.props;
+const { buttonId = "auth-btn", pwdVariable, urlVariable } = Astro.props;
 
 ---
 
-<!-- Secured Link Button -->
+<style>
+  .inline-button {
+    display: inline-block;
+    vertical-align: middle;
+  }
+</style>
 
-<button 
-    id={buttonId}
-    class="flex items-center text-sm citrus-link mb-2 px-2 py-1 bg-gray-200/75 dark:bg-gray-900/75 rounded-lg justify-center items-center hover:brightness-90 dark:hover:brightness-110 transition-all duration-100"
-    title="secured link"
-    aria-label="securedlink"
->
-    {buttonLabel}
-</button>
+<!-- Secured Link Button -->
+  <button 
+      id={buttonId}
+      class="inline-button items-center"
+      title="secured link"
+      aria-label="securedlink"
+  >
+      <slot/>
+  </button>
 
 <!-- Secure Password Modal -->
-<div id="password-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
+<div id="password-modal" class="fixed flex inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
     <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full mx-4">
-        <h3 class="text-lg font-semibold mb-4 dark:text-white">Enter Password</h3>
+        <h3 class="text-lg font-semibold mb-4 mt-0 dark:text-white">Enter Password</h3>
         <input 
             type="password" 
             id="password-input" 
@@ -53,7 +59,8 @@ const { buttonId = "auth-btn", buttonLabel = "Open Secured Link", pwdVariable, u
         errorMessage;
         statusMessage;
         isLoading;
-        initialized;
+        authBtn;
+        boundEvents;
 
         constructor() {
             this.modal = null;
@@ -62,16 +69,14 @@ const { buttonId = "auth-btn", buttonLabel = "Open Secured Link", pwdVariable, u
             this.cancelBtn = null;
             this.errorMessage = null;
             this.statusMessage = null;
+            this.authBtn = null;
             this.isLoading = false;
-            this.initialized = false;
+            this.boundEvents = false;
         }
 
         init() {
-            if (this.initialized) {
-                return;
-            }
-
-            const authBtn = document.getElementById(buttonId);
+            // Always re-query DOM elements to handle page navigation
+            this.authBtn = document.getElementById(buttonId);
             this.modal = document.getElementById('password-modal');
             this.passwordInput = document.getElementById('password-input');
             this.submitBtn = document.getElementById('submit-password');
@@ -79,16 +84,27 @@ const { buttonId = "auth-btn", buttonLabel = "Open Secured Link", pwdVariable, u
             this.errorMessage = document.getElementById('error-message');
             this.statusMessage = document.getElementById('status-message');
 
-            if (!authBtn || !this.modal || !this.passwordInput || !this.submitBtn || !this.cancelBtn) {
-                return;
-            }
-
-            this.bindEvents(authBtn);
-            this.initialized = true;
+            // Remove existing event listeners to prevent duplicates
+            this.cleanup();
+            
+            // Bind new event listeners
+            this.bindEvents();
+            this.boundEvents = true;
+            return true;
         }
 
-        bindEvents(authBtn) {
-            authBtn.addEventListener('click', () => this.showModal());
+        cleanup() {
+            if (this.boundEvents && this.authBtn) {
+                // Remove event listeners to prevent memory leaks
+                const newAuthBtn = this.authBtn.cloneNode(true);
+                this.authBtn.parentNode.replaceChild(newAuthBtn, this.authBtn);
+                this.authBtn = newAuthBtn;
+            }
+            this.boundEvents = false;
+        }
+
+        bindEvents() {
+            this.authBtn.addEventListener('click', () => this.showModal());
             this.cancelBtn.addEventListener('click', () => this.hideModal());
             this.submitBtn.addEventListener('click', () => this.handleSubmit());
 
@@ -191,21 +207,56 @@ const { buttonId = "auth-btn", buttonLabel = "Open Secured Link", pwdVariable, u
         }
     }
 
-    let globalHandler = null;
+    // Use a Map to store handlers per button ID to support multiple instances
+    const handlerMap = new Map();
 
     function initSecureAuth() {
-        if (globalHandler) {
-            return;
+        // Clean up previous handler for this button ID
+        const existingHandler = handlerMap.get(buttonId);
+        if (existingHandler) {
+            existingHandler.cleanup();
         }
-        globalHandler = new SecureAuthHandler();
-        globalHandler.init();
+
+        // Create new handler
+        const handler = new SecureAuthHandler();
+        let success = handler.init();
+        
+        // If initialization failed, try again after a short delay
+        if (!success) {
+            setTimeout(() => {
+                success = handler.init();
+                if (success) {
+                    handlerMap.set(buttonId, handler);
+                }
+            }, 100);
+        } else {
+            handlerMap.set(buttonId, handler);
+        }
     }
 
+    // Clean up on page unload
+    function cleanup() {
+        const handler = handlerMap.get(buttonId);
+        if (handler) {
+            handler.cleanup();
+            handlerMap.delete(buttonId);
+        }
+    }
+
+    // Initialize on various events to ensure it works with Astro navigation
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initSecureAuth);
     } else {
         initSecureAuth();
     }
 
+    // Astro-specific page load event
     document.addEventListener('astro:page-load', initSecureAuth);
+    
+    // Backup for traditional page loads
+    window.addEventListener('load', initSecureAuth);
+    
+    // Clean up when leaving the page
+    document.addEventListener('astro:before-preparation', cleanup);
+    window.addEventListener('beforeunload', cleanup);
 </script>
