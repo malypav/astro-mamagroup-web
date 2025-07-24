@@ -72,6 +72,13 @@ const { buttonId = "auth-btn", pwdVariable, urlVariable } = Astro.props;
             this.authBtn = null;
             this.isLoading = false;
             this.boundEvents = false;
+            
+            // Event handler references for proper cleanup
+            this.authClickHandler = null;
+            this.cancelClickHandler = null;
+            this.submitClickHandler = null;
+            this.modalClickHandler = null;
+            this.passwordKeyHandler = null;
         }
 
         init() {
@@ -94,31 +101,49 @@ const { buttonId = "auth-btn", pwdVariable, urlVariable } = Astro.props;
         }
 
         cleanup() {
-            if (this.boundEvents && this.authBtn) {
-                // Remove event listeners to prevent memory leaks
-                const newAuthBtn = this.authBtn.cloneNode(true);
-                this.authBtn.parentNode.replaceChild(newAuthBtn, this.authBtn);
-                this.authBtn = newAuthBtn;
+            if (this.boundEvents) {
+                // Store references to the bound functions so we can remove them
+                if (this.authBtn && this.authClickHandler) {
+                    this.authBtn.removeEventListener('click', this.authClickHandler);
+                }
+                if (this.cancelBtn && this.cancelClickHandler) {
+                    this.cancelBtn.removeEventListener('click', this.cancelClickHandler);
+                }
+                if (this.submitBtn && this.submitClickHandler) {
+                    this.submitBtn.removeEventListener('click', this.submitClickHandler);
+                }
+                if (this.modal && this.modalClickHandler) {
+                    this.modal.removeEventListener('click', this.modalClickHandler);
+                }
+                if (this.passwordInput && this.passwordKeyHandler) {
+                    this.passwordInput.removeEventListener('keypress', this.passwordKeyHandler);
+                }
             }
             this.boundEvents = false;
         }
 
         bindEvents() {
-            this.authBtn.addEventListener('click', () => this.showModal());
-            this.cancelBtn.addEventListener('click', () => this.hideModal());
-            this.submitBtn.addEventListener('click', () => this.handleSubmit());
-
-            this.modal.addEventListener('click', (e) => {
+            // Store bound functions as class properties so we can remove them later
+            this.authClickHandler = () => this.showModal();
+            this.cancelClickHandler = () => this.hideModal();
+            this.submitClickHandler = () => this.handleSubmit();
+            this.modalClickHandler = (e) => {
                 if (e.target === this.modal) {
                     this.hideModal();
                 }
-            });
-
-            this.passwordInput.addEventListener('keypress', (e) => {
+            };
+            this.passwordKeyHandler = (e) => {
                 if (e.key === 'Enter' && !this.isLoading) {
                     this.handleSubmit();
                 }
-            });
+            };
+
+            // Add event listeners
+            this.authBtn.addEventListener('click', this.authClickHandler);
+            this.cancelBtn.addEventListener('click', this.cancelClickHandler);
+            this.submitBtn.addEventListener('click', this.submitClickHandler);
+            this.modal.addEventListener('click', this.modalClickHandler);
+            this.passwordInput.addEventListener('keypress', this.passwordKeyHandler);
         }
 
         showModal() {
@@ -186,7 +211,7 @@ const { buttonId = "auth-btn", pwdVariable, urlVariable } = Astro.props;
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ pwdVariable, urlVariable,password })
+                    body: JSON.stringify({ pwdVariable, urlVariable, password })
                 });
 
                 const data = await response.json();
@@ -194,6 +219,11 @@ const { buttonId = "auth-btn", pwdVariable, urlVariable } = Astro.props;
                 if (data.success && data.url) {
                     this.submitBtn.textContent = 'Verified';
                     window.open(data.url, '_blank');
+                    
+                    // Close modal after a short delay to give user feedback
+                    setTimeout(() => {
+                        this.hideModal();
+                    }, 1000);
                 } else {
                     this.showError(data.error);
                     this.passwordInput.value = '';
