@@ -77,6 +77,7 @@ const { buttonId = "auth-btn", pwdVariable, urlVariable } = Astro.props;
             this.authClickHandler = null;
             this.cancelClickHandler = null;
             this.submitClickHandler = null;
+            this.openLinkClickHandler = null;
             this.modalClickHandler = null;
             this.passwordKeyHandler = null;
         }
@@ -146,6 +147,10 @@ const { buttonId = "auth-btn", pwdVariable, urlVariable } = Astro.props;
             this.passwordInput.addEventListener('keypress', this.passwordKeyHandler);
         }
 
+        openLink(url) {
+            window.open(url, '_blank');
+        }
+
         showModal() {
             this.modal.classList.remove('hidden');
             this.modal.classList.add('flex');
@@ -186,12 +191,12 @@ const { buttonId = "auth-btn", pwdVariable, urlVariable } = Astro.props;
             this.submitBtn.textContent = loading ? 'Verifying...' : 'Submit';
         }
 
-        setReloadPage(done) {
-            this.isLoading = !done;
-            this.refreshPage = done;
-            this.submitBtn.disabled = !done;
-            this.submitBtn.textContent = done ? 'Refresh' : 'Verified';
-        }
+        // setReloadPage(done) {
+        //     this.isLoading = !done;
+        //     this.refreshPage = done;
+        //     this.submitBtn.disabled = !done;
+        //     this.submitBtn.textContent = done ? 'Refresh' : 'Verified';
+        // }
 
         async handleSubmit() {
             if (this.isLoading) return;
@@ -219,11 +224,14 @@ const { buttonId = "auth-btn", pwdVariable, urlVariable } = Astro.props;
                 if (data.success && data.url) {
                     this.submitBtn.textContent = 'Verified';
                     window.open(data.url, '_blank');
-                    
-                    // Close modal after a short delay to give user feedback
+                    this.showStatus('Access granted! Redirecting...');
+
                     setTimeout(() => {
-                        this.hideModal();
-                    }, 1000);
+                        this.submitBtn.textContent = 'Open Link';
+                        this.submitBtn.removeEventListener('click', this.submitClickHandler);
+                        this.openLinkClickHandler = () => this.openLink(data.url);
+                        this.submitBtn.addEventListener('click', this.openLinkClickHandler);
+                    }, 3000);
                 } else {
                     this.showError(data.error);
                     this.passwordInput.value = '';
