@@ -113,6 +113,9 @@ const { buttonId = "auth-btn", pwdVariable, urlVariable } = Astro.props;
                 if (this.submitBtn && this.submitClickHandler) {
                     this.submitBtn.removeEventListener('click', this.submitClickHandler);
                 }
+                if (this.submitBtn && this.openLinkClickHandler) {
+                    this.submitBtn.removeEventListener('click', this.openLinkClickHandler);
+                }
                 if (this.modal && this.modalClickHandler) {
                     this.modal.removeEventListener('click', this.modalClickHandler);
                 }
@@ -120,7 +123,9 @@ const { buttonId = "auth-btn", pwdVariable, urlVariable } = Astro.props;
                     this.passwordInput.removeEventListener('keypress', this.passwordKeyHandler);
                 }
                 this.hideStatus();
+                this.statusMessage.textContent = '';
                 this.hideError();
+                this.errorMessage.textContent = '';
             }
             this.boundEvents = false;
         }
