@@ -119,6 +119,8 @@ const { buttonId = "auth-btn", pwdVariable, urlVariable } = Astro.props;
                 if (this.passwordInput && this.passwordKeyHandler) {
                     this.passwordInput.removeEventListener('keypress', this.passwordKeyHandler);
                 }
+                this.hideStatus();
+                this.hideError();
             }
             this.boundEvents = false;
         }
@@ -190,13 +192,6 @@ const { buttonId = "auth-btn", pwdVariable, urlVariable } = Astro.props;
             this.submitBtn.disabled = loading;
             this.submitBtn.textContent = loading ? 'Verifying...' : 'Submit';
         }
-
-        // setReloadPage(done) {
-        //     this.isLoading = !done;
-        //     this.refreshPage = done;
-        //     this.submitBtn.disabled = !done;
-        //     this.submitBtn.textContent = done ? 'Refresh' : 'Verified';
-        // }
 
         async handleSubmit() {
             if (this.isLoading) return;
