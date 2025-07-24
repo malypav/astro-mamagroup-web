@@ -163,6 +163,7 @@ const { buttonId = "auth-btn", pwdVariable, urlVariable } = Astro.props;
             this.modal.classList.add('flex');
             this.passwordInput.focus();
             this.passwordInput.value = '';
+            this.hideStatus();
             this.hideError();
         }
 
@@ -171,6 +172,9 @@ const { buttonId = "auth-btn", pwdVariable, urlVariable } = Astro.props;
             this.modal.classList.remove('flex');
             this.passwordInput.value = '';
             this.hideError();
+            this.hideStatus();
+            this.cleanup();
+            this.bindEvents();
             this.setLoading(false);
         }
 
