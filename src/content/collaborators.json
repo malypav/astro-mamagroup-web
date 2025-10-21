@@ -26,5 +26,12 @@
         "photo": "",
         "visible": "true",
         "url":"https://www.chemie.uni-wuerzburg.de/en/ptc/labs/lehrstuhl-i-prof-t-brixner/"
+    },
+    {
+        "name": "Thomas Renger",
+        "institute": "JKU Linz",
+        "photo": "",
+        "visible": "true",
+        "url":"https://www.jku.at/en/institute-for-theoretical-physics/about-us/departments/theoretical-biophysics/"
     }
 ]
