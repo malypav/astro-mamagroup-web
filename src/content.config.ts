@@ -5,7 +5,7 @@ import { alertsLoader } from "./loaders/alertsLoader.ts";
 
 
 const baseSchema = z.object({
-	title: z.string().max(60),
+	title: z.string().max(100),
 	visible: z.boolean().default(true).optional(),
 });
 
