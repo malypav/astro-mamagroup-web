@@ -4,7 +4,7 @@ date: "2025-09-25"
 image: "q-day-logo-small.WebP"
 tags: ['science popularization','CUNI',]
 teaser: ""
-useImageInBody: false
+useImageInHeader: false
 ---
 
 ![Den s kvantovkou 2025](/news/q-day-logo.WebP)

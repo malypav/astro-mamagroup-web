@@ -58,7 +58,7 @@ const news = defineCollection({
 				.string()
 				.optional()
 				.transform((val) => `/news/${val}`),
-			useImageInBody: z.boolean().default(true).optional(),
+			useImageInHeader: z.boolean().default(true).optional(),
 			tags: z
 				.array(z.string())
 				.default([])
