@@ -33,5 +33,12 @@
         "photo": "",
         "visible": "true",
         "url":"https://www.jku.at/en/institute-for-theoretical-physics/about-us/departments/theoretical-biophysics/"
+    },
+    {
+        "name": "Jakub Pšenčík",
+        "institute": "Charles University",
+        "photo": "",
+        "visible": "true",
+        "url":"https://physics.mff.cuni.cz/kchfo/oos/"
     }
 ]
