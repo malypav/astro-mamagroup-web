@@ -12,4 +12,4 @@ At the end of February, our entire group went to a winter school and a workshop 
 
 During the second week, [Tomáš](/mancal), [Vláďa](/group/slama), and [Pavel](/maly) had talks about their current research, while František and [Matteo](/group/bruschi) attended the poster session.
 
-![Les Houches 2025 - Mont Blanc view](/news/leshouches-2025-photo-1.WebP)
+![Les Houches 2025 - Mont Blanc view](/news/les-houches-2025-photo-1.WebP)
