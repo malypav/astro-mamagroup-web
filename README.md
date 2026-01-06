@@ -63,19 +63,39 @@ The domain provided by Netlify ([mamagroup.netlify.app](https://mamagroup.netlif
 
 ## Quick start
 
-In order to run, develop, and contribute to the website, you need to prepare a JavaScript (JS) website development environment first. There are several package managers available (npm, yarn, pnpm, ...) but I would recommend using Performant Node Package Manager (pnpm) since it is the newest one. 
+In order to run, develop, and contribute to the website, you need to prepare a JavaScript (JS) website development environment first. There are several package managers available (npm, yarn, pnpm, ...) but I would recommend using the Performant Node Package Manager (pnpm). 
 
-To install it on Linux or WSL (Windows Subsystem for Linux), type the following commands into your terminal (more installation options can be found in the [pnpm installation guide](https://pnpm.io/installation)):
+<!-- To install it on Linux or WSL (Windows Subsystem for Linux), type the following commands into your terminal (more installation options can be found in the [pnpm installation guide](https://pnpm.io/installation)): -->
 
-```bash
+<!-- ```bash
 curl -fsSL https://get.pnpm.io/install.sh | sh -
-```
+``` -->
 
-You can validate the installation by running (you might need to restart the console first to load the updated `$PATH` variable):
+First, you need to have `Node.js` (JavaScript language runtime environment) installed. Please follow the official installation instructions at [`https://nodejs.org/en/download`](https://nodejs.org/en/download) that will install the package manager as well. I'd recommend selecting the "LTS" version of `Node.js` (currently v22.17.0), `nvm` (=node version manager), and `pnpm` (=performant node package manager).
+
+> ***EXAMPLE:*** `Node.js` installation `v22.17.0 (LTS)` for `Linux` using `nvm` with `pnpm`:
+> 
+> ```bash
+> # Download and install nvm:
+> curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+> # in lieu of restarting the shell
+> \. "$HOME/.nvm/nvm.sh"
+> # Download and install Node.js:
+> nvm install 22
+> # Verify the Node.js version:
+> node -v # Should print "v22.17.0".
+> nvm current # Should print "v22.17.0".
+> # Download and install pnpm:
+> corepack enable pnpm
+> ```
+
+You can validate the installation of `pnpm` by running (you might need to restart the console first):
 
 ```bash
 pnpm -v
 ```
+
+> ***TROUBLESHOOTING:*** The `pnpm` can be also installed independent of the `Node.js`. However, you might than encounter a *"Sharp package not found."* error due to unproperly linked environments. You can install the `Node.js` after `pnpm` is already installed to resolve these errors. You need to to run the command `pnpm install` in the project root directory again to install missing packages and setup links properly.
 
 Additionally, you will also need GIT. If you don't have it installed yet (you can check with `git --version`), install it using your package manager, e.g. `sudo apt install git`. 
 
@@ -97,6 +117,18 @@ Once all dependencies are successfuly installed, you can start the developmental
 ```bash
 pnpm dev
 ```
+
+> ***TROUBLESHOOTING:*** You might encounter the following error during the first attempt to run the local server:
+>
+> ```bash
+> MissingSharp: Could not find Sharp. Please install Sharp (sharp) manually into your project or migrate to another image service.
+> ```
+>
+> You can learn more about the error on the official [Astro website](https://docs.astro.build/en/reference/errors/missing-sharp/). In short, it is a result of stricter policies of the `pnpm` manager. To resolve it, you need to manually install the sharp package:
+>
+> ```bash
+> sudo pnpm install sharp
+> ```
 
 Do not close the terminal window, the server is now running there. If you need to interact with the project (e.g. install new libraries as you are coding), open a new terminal and navigate to the project folder. 
 

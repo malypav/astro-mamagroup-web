@@ -34,7 +34,7 @@
         "name": "Matteo Bruschi",
         "position": "postdoc",
         "path": "bruschi",
-        "photo": "",
+        "photo": "matteo-bruschi-120.jpg",
         "active": "True",
         "years":{
             "from":2024, 
@@ -107,21 +107,25 @@
                 "to":2018
             },
             {
-                "from":2025, 
+                "from":2026, 
                 "to":""
             }
         ],
         "email": "vladislav.slama@epfl.ch",
-        "orcid": "0000-0001-7339-5523"
+        "orcid": "0000-0001-7339-5523",
+        "visible": "True"
     },
     {
-        "name": "František Šanda",
-        "position": "collaborator",
-        "path": "sanda",
+        "name": "Erika Keil",
+        "position": "postdoc",
+        "path": "keil",
         "photo": "",
-        "active": "True",
-        "email": "frantisek.sanda@matfyz.cuni.cz",
-        "orcid": "0000-0003-2416-8804"
+        "active": "true",
+        "visible": "false",
+        "years":{
+            "from":2026, 
+            "to":""
+        }
     },
     {
         "name": "Aurélia Chenu",

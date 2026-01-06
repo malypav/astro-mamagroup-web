@@ -27,7 +27,7 @@ const image = post.data.image;
                 <div class="flex justify-center flex-col items-center md:items-start mb-0">
                     <a 
                         href={`/news/${post.id}/`}
-                        class="hover:text-accent-base transition-colors absolute inset-0 z-10"
+                        class="hover:text-accent-base transition-colors absolute inset-0 z-0"
                         aria-label={`Read more about ${post.data.title}`}
                     >
                         <span class="sr-only">{post.data.title}</span>
@@ -54,7 +54,7 @@ const image = post.data.image;
                                     <a 
                                         aria-label={`View all posts with the tag: ${tag}`} 
                                         href={`/tags/${tag}`}
-                                        class="relative z-20"
+                                        class="relative z-0"
                                         onclick="event.stopPropagation()"
                                     >
                                         <Badge variant="accent-two" title={tag} />

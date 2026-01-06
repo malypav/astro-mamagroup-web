@@ -1,0 +1,65 @@
+---
+name: "Institute of Physics Off-site Seminar 2025"
+group: "seminars"
+date: ["2025-05-19", "2025-05-23"]
+createBanner: false
+autoHideBanner: true
+visible: true
+tags: ["offsite seminar","seminar","FUUK"]
+---
+
+import SecuredLink from "@/components/SecuredLink.astro";
+import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+
+<Image 
+    src="/events/03-offsite-seminar-2025/03-hotel-Albert-photo.WebP" 
+    alt="Offsite Seminar 2025 - Hotel Albert, Paseky nad Jizerou" 
+    class="w-full h-auto object-cover mb-4"
+    loading="lazy"
+    width="1000"
+    height="1500"
+/>
+
+
+## Dates and Venue: 
+
+May 19&ndash;23, 2025
+
+hotel Albert, Paseky nad Jizerou, Jizerské Mts., Czechia
+
+
+## Seminar recordings:
+
+<div class="flex flex-col justify-center align-left">
+    A part of the seminar was recorded and uploaded to YouTube (as "unlisted"). The video can be accessed by the password-protected link below.
+    <div class="flex mx-auto max-w-md">
+        <SecuredLink 
+            client:load
+            pwdVariable="OFFSITE_SEMINAR_PWD_HASH" 
+            urlVariable="OFFSITE_SEMINAR_URL"
+        >
+            <span class="flex text-sm citrus-link mb-2 px-3 py-1 bg-accent-two dark:bg-white text-bgColor dark:text-gray-800 rounded-lg justify-center items-center hover:brightness-110 dark:hover:brightness-90 transition-all duration-100">
+                <Icon name="ri:video-fill" class="inline-block mr-2 w-6 h-6" />
+                <span>YouTube video</span>
+            </span>
+        </SecuredLink>
+    </div>    
+</div>
+<div class="text-xs">
+    *The password has been sent to every attendee of the seminar in an e-mail from Tomáš Mančal. If you haven't received it, or you have issues accessing the link, please contact <a href="mailto:tomas.mancal@matfyz.cuni.cz" class="citrus-link">him</a> or the <a href="mailto:michal.ptacek@matfyz.cuni.cz" class="citrus-link">website administrator</a>.
+</div>
+
+## Program:
+
+<iframe 
+  src="https://docs.google.com/gview?url=https://mama-group.cz/events/03-offsite-seminar-2025/03-seminar-program.pdf&embedded=true" 
+  width="800px" 
+  height="1000px"
+  style="border: none;">
+    This browser does not support PDFs. Please download the PDF to view it: 
+        <a href="/events/03-seminar-program.pdf">
+            Download PDF
+        </a>
+        .
+</iframe>

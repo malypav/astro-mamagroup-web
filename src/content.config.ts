@@ -5,7 +5,7 @@ import { alertsLoader } from "./loaders/alertsLoader.ts";
 
 
 const baseSchema = z.object({
-	title: z.string().max(60),
+	title: z.string().max(100),
 	visible: z.boolean().default(true).optional(),
 });
 
@@ -58,6 +58,7 @@ const news = defineCollection({
 				.string()
 				.optional()
 				.transform((val) => `/news/${val}`),
+			useImageInHeader: z.boolean().default(true).optional(),
 			tags: z
 				.array(z.string())
 				.default([])
