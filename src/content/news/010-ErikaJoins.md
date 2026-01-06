@@ -8,4 +8,4 @@ createBanner: true
 autoHideBanner: true
 autoHideBannerAfter: 30
 ---
-Erika Keil joins our research group. After completing her PhD in <a href="https://www.ch.nat.tum.de/dynspec/startseite/"> Jürgen Hauer's group </a> at TUM, Erika joins our group supported by the Alexander von Humboldt foundation. within her Feodor Lyne fellowship project, we will together with <a href="https://physics.mff.cuni.cz/kchfo/oos/jakub/psencik.htm"> Jakub Pšenčík </a> from our faculty and David Bína (University of South Bohemia and CAS) study uphill energy transfer in photosynthetic red-light harvesting complexes. 
+Erika Keil joins our research group. After completing her PhD in <a href="https://www.ch.nat.tum.de/dynspec/startseite/"> Jürgen Hauer's group </a> at TUM, Erika joins our group supported by the Alexander von Humboldt foundation. within her Feodor Lyne fellowship project, we will together with <a href="https://physics.mff.cuni.cz/kchfo/oos/jakub/psencik.htm"> Jakub Pšenčík </a> from our faculty and David Bína (University of South Bohemia and CAS) study uphill energy transfer in photosynthetic red-light harvesting complexes. Welcome Erika!
